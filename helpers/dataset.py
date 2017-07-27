@@ -1,5 +1,5 @@
 from os import listdir
-from os.path import isfile, isdir, join
+from os.path import dirname, isfile, isdir, join, split
 from zipfile import ZipFile
 from pandas import read_csv
 
@@ -22,7 +22,7 @@ class Dataset:
         self._load_archive()
 
     def _find_archive_type(self):
-        base_path = join('datasets', self.name)
+        base_path = join(split(dirname(__file__))[0], 'datasets', self.name)
         if isdir(base_path):
             self._archive_type = 'dir'
         elif isfile(join(base_path, 'zip')):
@@ -31,7 +31,7 @@ class Dataset:
             raise ValueError('A dataset of a compatible type was not found')
 
     def _load_archive(self):
-        base_path = join('datasets', self.name)
+        base_path = join(split(dirname(__file__))[0], 'datasets', self.name)
         if self._archive_type is 'dir':
             self.base_path = base_path
             self.file = None
